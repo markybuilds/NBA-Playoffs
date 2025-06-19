@@ -9,6 +9,7 @@ import pandas as pd
 from nba_odds.sportsline_scraper import fetch_sportsline_projections
 from fuzzywuzzy import process
 import os  # Import os module for file path operations
+from nba_odds.parlay_generator import run_parlay_generator
 
 # Initialize analyzer (uses .env for API key)
 analyzer = NBAOddsAnalyzer()
@@ -122,6 +123,7 @@ def main():
     props_df = pd.DataFrame(all_props)
     merged_csv = os.path.join(data_dir, "nba_player_prop_edges.csv")
     merge_props_with_projections(props_df, merged_csv)
+    run_parlay_generator()  # Run parlay generator after merging props
 
 if __name__ == "__main__":
     main()

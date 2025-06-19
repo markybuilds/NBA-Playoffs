@@ -92,3 +92,44 @@ pytest
 
 ## License
 MIT License
+
+## Parlay Generator
+
+The parlay generator is a core feature of this project, designed to efficiently find the best NBA player prop parlays for value betting and promotions. It supports multiple optimization strategies and outputs both machine-readable (CSV) and human-readable (Markdown) summaries.
+
+### How It Works
+- **Input:** Uses the merged and filtered player prop data (`data/nba_player_prop_edges.csv`).
+- **Markets:** Only points, rebounds, and assists (including alternates) are considered. Only "Over" bets from FanDuel are included.
+- **Constraints:**
+  - No parlay leg can have American odds worse than -500.
+  - Only one prop per player/stat type (e.g., cannot include both "Player Rebounds" and "Alternate Rebounds" for the same player in a parlay).
+  - No duplicate player/market in a parlay.
+  - Only props with positive edge are considered.
+- **Optimization:**
+  - Finds the top 5-leg parlays by probability and edge.
+  - Generates "ladder" parlays by moving each leg to the next higher line.
+  - Always includes the best 2-leg parlay (by edge, with payout constraint if set).
+  - Special logic for promos: finds the parlay with the highest expected value (EV) for a "No Sweat" (risk-free) bet, accounting for free bet conversion value and all constraints.
+- **Output:**
+  - `data/nba_best_parlays.csv`: Machine-readable summary of all top parlays.
+  - `data/nba_best_parlays.md`: Human-readable Markdown with:
+    - Top 3 most probable 5-leg parlays
+    - Ladder versions for each top parlay
+    - Best 2-leg parlays (with and without probability filters)
+    - **Best Parlay for No Sweat Promo (FanDuel):** Maximizes EV for risk-free bet promos, with all constraints enforced
+
+### No Sweat Promo (FanDuel) Logic
+- The generator calculates expected value (EV) for each parlay as:
+  - `EV = (Win Probability × Net Win) + (Lose Probability × Free Bet Value)`
+  - Free bet value is configurable (default: 70% of stake)
+  - Only parlays with no duplicate player/stat type are eligible
+  - The parlay with the highest EV is shown in the Markdown output
+
+### Example Output
+See `data/nba_best_parlays.md` for a sample of the Markdown output, including all parlay types and the best promo parlay.
+
+### Customization
+- You can adjust constraints, free bet conversion rate, and output format in `nba_odds/parlay_generator.py`.
+- The generator is modular and can be extended for new promo types or custom user constraints.
+
+---
