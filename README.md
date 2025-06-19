@@ -42,32 +42,31 @@ A comprehensive Python tool for fetching and analyzing NBA player prop odds from
 ## Setup
 
 1. **Get an API key** from [The Odds API](https://the-odds-api.com/)
-2. **Install dependencies**:
+2. **Create and activate a virtual environment**:
+   ```bash
+   python -m venv .venv
+   # On Windows PowerShell:
+   .venv\Scripts\Activate.ps1
+   # On macOS/Linux:
+   source .venv/bin/activate
+   ```
+3. **Install dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
-3. **Set your API key** in the `.env` file:
+4. **Set your API key** in the `.env` file:
    ```
    ODDS_API_KEY=your_api_key_here
    ```
 
 ## Usage
 
-### Basic Usage
-Run the main analyzer:
-```bash
-python nba_odds_analyzer.py
-```
-
-### Example Usage Scenarios
-Run comprehensive examples:
-```bash
-python example_usage.py
-```
-
 ### Programmatic Usage
+Import and use the analyzer in your own scripts:
+
 ```python
-from nba_odds_analyzer import NBAOddsAnalyzer, NBAMarketKeys
+from nba_odds.analyzer import NBAOddsAnalyzer
+from nba_odds.models import NBAMarketKeys
 
 # Initialize analyzer (all bookmakers)
 analyzer = NBAOddsAnalyzer()
@@ -92,12 +91,13 @@ best_odds = analyzer.find_best_odds(props)
 
 ## Project Structure
 
-- `nba_odds_analyzer.py` - Main analyzer class and functionality
+- `nba_odds/` - Core package (analyzer, models, API)
 - `example_usage.py` - Comprehensive usage examples
 - `requirements.txt` - Python dependencies
 - `.env` - Environment variables (API key)
 - `api-notes.txt` - The Odds API documentation
 - `nba_finals_2025_analysis.md` - Sample analysis data
+- `tests/` - Pytest-based tests
 
 ## API Usage Notes
 
@@ -109,26 +109,12 @@ best_odds = analyzer.find_best_odds(props)
 
 ## CSV Data Export
 
-The analyzer automatically saves odds data to CSV files for further analysis:
-
-### Automatic CSV Generation
-
-When running the main script, two CSV files are automatically created:
-
-```bash
-python nba_odds_analyzer.py
-```
-
-This generates:
-- `nba_odds_data_YYYYMMDD_HHMMSS.csv` - All fetched player prop data
-- `nba_best_odds_YYYYMMDD_HHMMSS.csv` - Best odds for each prop
+The analyzer provides methods to save odds data to CSV files for further analysis:
 
 ### Manual CSV Saving
 
-You can also save data programmatically:
-
 ```python
-from nba_odds_analyzer import NBAOddsAnalyzer
+from nba_odds.analyzer import NBAOddsAnalyzer
 
 # Initialize analyzer
 analyzer = NBAOddsAnalyzer(api_key="your_api_key")
@@ -167,7 +153,7 @@ analyzer.save_best_odds_to_csv(results['all_props'], 'my_best_odds.csv')
 
 ## Output
 
-The script outputs:
+The analyzer outputs:
 - List of NBA games with player props
 - Sample props for each game
 - Best available odds across all bookmakers
@@ -182,7 +168,7 @@ To integrate with your existing NBA analysis:
 
 ## Rate Limiting
 
-The script automatically handles rate limiting by:
+The analyzer automatically handles rate limiting by:
 - Tracking API usage from response headers
 - Adding delays when approaching rate limits
 - Providing usage statistics

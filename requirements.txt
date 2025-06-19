@@ -1,4 +1,7 @@
 requests
 pandas
 python-dotenv
+fastapi
+pytest
+bs4
 
