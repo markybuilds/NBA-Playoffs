@@ -1,0 +1,224 @@
+# Odds API Documentation
+
+## Overview
+The Odds API provides access to betting odds for various sports, allowing developers to retrieve information about upcoming games, live odds, and historical data. This documentation outlines the available endpoints, parameters, and example requests.
+
+## Base URL
+All requests use the host:
+https://api.the-odds-api.com
+
+## Endpoints
+
+### 1. Get Sports
+Returns a list of in-season sport objects. The sport key can be used as the sport parameter in the /odds requests.
+
+**Endpoint:**
+GET /v4/sports/?apiKey={apiKey}
+
+**Parameters:**
+- `apiKey`: An API key emailed when you sign up for a plan.
+- `all` (optional): If set to true, returns a list of both in and out of season sports.
+
+**Example Request:**
+GET https://api.the-odds-api.com/v4/sports/?apiKey=YOUR_API_KEY
+
+**Example Response:**
+json
+[
+{
+"key": "americanfootball_nfl",
+"group": "American Football",
+"title": "NFL",
+"description": "US Football",
+"active": true,
+"has_outrights": false
+},
+...
+]
+
+### 2. Get Odds
+Returns a list of upcoming and live games with recent odds for a given sport, region, and market.
+
+**Endpoint:**
+GET /v4/sports/{sport}/odds/?apiKey={apiKey}&regions={regions}&markets={markets}
+
+**Parameters:**
+- `sport`: The sport key obtained from calling the /sports endpoint.
+- `apiKey`: An API key emailed when you sign up for a plan.
+- `regions`: Determines the bookmakers to be returned. Valid regions are `us`, `uk`, `au`, and `eu`.
+- `markets` (optional): Determines which odds market is returned. Defaults to `h2h`. Valid markets include `h2h`, `spreads`, `totals`, and `outrights`.
+- `dateFormat` (optional): Determines the format of timestamps in the response. Valid values are `unix` and `iso`. Defaults to `iso`.
+- `oddsFormat` (optional): Determines the format of odds in the response. Valid values are `decimal` and `american`. Defaults to `decimal`.
+- `eventIds` (optional): Comma-separated game ids. Filters the response to only return games with the specified ids.
+
+**Example Request:**
+GET https://api.the-odds-api.com/v4/sports/americanfootball_nfl/odds/?apiKey=YOUR_API_KEY&regions=us&markets=h2h,spreads
+
+**Example Response:**
+json
+[
+{
+"id": "bda33adca828c09dc3cac3a856aef176",
+"sport_key": "americanfootball_nfl",
+"commence_time": "2021-09-10T00:20:00Z",
+"home_team": "Tampa Bay Buccaneers",
+"away_team": "Dallas Cowboys",
+"bookmakers": [
+{
+"key": "unibet",
+"title": "Unibet",
+"markets": [
+{
+"key": "h2h",
+"outcomes": [
+{
+"name": "Dallas Cowboys",
+"price": 240
+},
+{
+"name": "Tampa Bay Buccaneers",
+"price": -303
+}
+]
+},
+...
+]
+},
+...
+]
+},
+...
+]
+
+### 3. Get Scores
+Returns a list of upcoming, live, and recently completed games for a given sport. Live and recently completed games contain scores.
+
+**Endpoint:**
+GET /v4/sports/{sport}/scores/?apiKey={apiKey}&daysFrom={daysFrom}&dateFormat={dateFormat}
+
+**Parameters:**
+- `sport`: The sport key obtained from calling the /sports endpoint.
+- `apiKey`: An API key emailed when you sign up for a plan.
+- `daysFrom` (optional): The number of days in the past from which to return completed games. Valid values are integers from 1 to 3.
+- `dateFormat` (optional): Determines the format of timestamps in the response. Valid values are `unix` and `iso`. Defaults to `iso`.
+
+**Example Request:**
+GET https://api.the-odds-api.com/v4/sports/americanfootball_nfl/scores/?daysFrom=3&apiKey=YOUR_API_KEY
+
+**Example Response:**
+json
+[
+{
+"id": "572d984e132eddaac3da93e5db332e7e",
+"sport_key": "americanfootball_nfl",
+"sport_title": "NFL",
+"commence_time": "2022-02-06T03:10:38Z",
+"completed": true,
+"home_team": "Sacramento Kings",
+"away_team": "Oklahoma City Thunder",
+"scores": [
+{
+"name": "Sacramento Kings",
+"score": "113"
+},
+{
+"name": "Oklahoma City Thunder",
+"score": "103"
+}
+],
+"last_update": "2022-02-06T05:18:19Z"
+},
+...
+]
+
+### 4. Usage Quota Costs
+- The usage quota cost is 1 per region per market.
+- Example costs:
+  - 1 market, 1 region: Cost: 1
+  - 3 markets, 1 region: Cost: 3
+  - 1 market, 3 regions: Cost: 3
+  - 3 markets, 3 regions: Cost: 9
+
+### 5. Keeping Track of Quota Usage
+To keep track of requests used and remaining on an API key, every API response includes the following response headers:
+- `x-requests-used`
+- `x-requests-remaining`
+- `x-requests-last`
+
+### 6. Additional Notes
+- Responses with empty data do not count towards the usage quota.
+- The API provides a comprehensive set of endpoints to access various betting markets and sports data, making it a valuable resource for developers looking to integrate betting odds into their applications.
+
+
+Here's a clean and organized version of the provided information in `.md` format:
+
+---
+
+# Player Prop Markets
+
+Below is a list of available player prop markets:
+
+- `player_assists`
+- `player_field_goals`
+- `player_kicking_points`
+- `player_pass_attempts`
+- `player_pass_completions`
+- `player_pass_interceptions`
+- `player_pass_longest_completion`
+- `player_pass_rush_reception_tds`
+- `player_pass_rush_reception_yds`
+- `player_pass_tds`
+- `player_pass_yds`
+- `player_pats`
+- `player_receptions`
+- `player_reception_longest`
+- `player_reception_yds`
+- `player_rush_attempts`
+- `player_rush_longest`
+- `player_rush_reception_tds`
+- `player_rush_reception_yds`
+- `player_rush_yds`
+- `player_sacks`
+- `player_solo_tackles`
+- `player_tackles_assists`
+- `player_tds_over`
+- `player_1st_td`
+- `player_anytime_td`
+- `player_last_td`
+
+---
+
+# Alternate Line Markets
+
+Below is a list of alternate line markets:
+
+- `player_assists_alternate`
+- `player_field_goals_alternate`
+- `player_kicking_points_alternate`
+- `player_pass_attempts_alternate`
+- `player_pass_completions_alternate`
+- `player_pass_interceptions_alternate`
+- `player_pass_longest_completion_alternate`
+- `player_pass_rush_reception_tds_alternate`
+- `player_pass_rush_reception_yds_alternate`
+- `player_pass_tds_alternate`
+- `player_pass_yds_alternate`
+- `player_pats_alternate`
+- `player_receptions_alternate`
+- `player_reception_longest_alternate`
+- `player_reception_yds_alternate`
+- `player_rush_attempts_alternate`
+- `player_rush_longest_alternate`
+- `player_rush_reception_tds_alternate`
+- `player_rush_reception_yds_alternate`
+- `player_rush_yds_alternate`
+- `player_sacks_alternate`
+- `player_solo_tackles_alternate`
+- `player_tackles_assists_alternate`
+
+---
+
+This layout provides clear separation between standard player prop markets and their alternate line counterparts.
+
+
+
