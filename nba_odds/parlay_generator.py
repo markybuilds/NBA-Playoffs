@@ -14,7 +14,7 @@ PARLAY_MIN_LEGS = 3
 PARLAY_MAX_LEGS = 6
 MIN_PROBABILITY = 0.05  # Minimum acceptable win probability for a parlay
 TOP_N_PARLAYS = 10
-TOP_PROPS = 250  # Only consider top 250 props by edge for speed and diversity
+TOP_PROPS = 1000  # Only consider top 250 props by edge for speed and diversity
 
 POINTS_MARKETS = {"player_points", "player_points_alternate"}
 REBOUNDS_MARKETS = {"player_rebounds", "player_rebounds_alternate"}
